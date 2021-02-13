@@ -1,0 +1,9 @@
+name: test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: golang:alpine
+    steps:
+      - name: go-test
+        run: go test -v ./... -bench=. -cover
