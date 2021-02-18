@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestPerimeter(t *testing.T) {
 	t.Run("rectangles", func(t *testing.T) {
@@ -15,21 +17,22 @@ func TestPerimeter(t *testing.T) {
 }
 
 func TestArea(t *testing.T) {
-	checkArea := func(t testing.TB, shape Shape, want float64) {
-		t.Helper()
-		got := shape.Area()
-		if got != want {
-			t.Errorf("got %.2f want %.2f", got, want)
-		}
+	areaTests := []struct {
+		name  string
+		shape Shape
+		want  float64
+	}{
+		{name: "Rectangle", shape: Rectangle{Width: 10.0, Height: 10.0}, want: 100},
+		{name: "Circle", shape: Circle{Radius: 10.0}, want: 31.41592653589793},
 	}
 
-	t.Run("rectangles", func(t *testing.T) {
-		r := Rectangle{10.0, 10.0}
-		checkArea(t, r, 100.0)
-	})
-
-	t.Run("circle", func(t *testing.T) {
-		c := Circle{10.0}
-		checkArea(t, c, 31.41592653589793)
-	})
+	for _, tt := range areaTests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.shape.Area()
+			want := tt.want
+			if got != want {
+				t.Errorf("%#v: got %.2f want %.2f", tt.shape, got, want)
+			}
+		})
+	}
 }

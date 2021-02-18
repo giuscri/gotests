@@ -1,6 +1,9 @@
 FROM golang:alpine
 
+RUN apk add git && go get -u github.com/kisielk/errcheck
+
 WORKDIR /app
+
 COPY . .
 
-RUN go test -v ./... -bench=. -cover
+RUN errcheck . && go test -v ./... -bench=. -cover
